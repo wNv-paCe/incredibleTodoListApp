@@ -12,65 +12,75 @@ This system exceeds the minimum requirements for React Native development, ensur
 
 ## Installation Instructions
 
-### 1. Install Node.js
+### 1. Install Node.js & Watchman
 
 Node.js is required to run a React Native project.
 
-- Visit the [Node.js official website](https://nodejs.org).
-- Download and install the latest **LTS** version.
-- After installation, open a terminal and run the following commands to verify the installation:
-  ```bash
-  node -v
-  npm -v
-  ```
-  You should see the version numbers of Node.js and npm, confirming the installation.
+We recommend installing Node and Watchman using Homebrew.
 
-### 2. Install Expo CLI
-
-Expo CLI is the tool used to create and manage React Native projects in a simplified way.
-
-- Open a terminal and run the following command to install Expo CLI globally:
+- Run the following commands in a Terminal after installing Homebrew:
 
   ```bash
-  npm install -g expo-cli
+  brew install node
+  brew install watchman
   ```
 
-- After installation, verify that Expo CLI is installed successfully by running:
+  If you have already installed Node on your system, make sure it is Node 18.18 or newer.
+
+Watchman is a tool by Facebook for watching changes in the filesystem. It is highly recommended you install it for better performance.
+
+### 2. Install Java Development Kit
+
+We recommend installing the OpenJDK distribution called Azul Zulu using Homebrew.
+
+- Run the following commands in a Terminal after installing Homebrew:
 
   ```bash
-  expo --version
+  brew install --cask zulu@17
+
+  # Get path to where cask was installed to double-click installer
+  brew info --cask zulu@17
   ```
 
-  This command will display the installed version of Expo CLI, confirming a successful installation.
+- After the JDK installation, add or update your JAVA_HOME environment variable in ~/.zshrc.
+- If you used above steps, JDK will likely be located at /opt/homebrew/Caskroom/zulu@17/17.0.12,17.52.17:
+  ```bash
+  export JAVA_HOME=/opt/homebrew/Caskroom/zulu@17/17.0.12,17.52.17
+  ```
+  If you have already installed JDK on your system, we recommend JDK 17. You may encounter problems using higher JDK versions.
 
-### 3. Install Android Studio (for Android development)
+### 3. Install Android Studio
 
 Although Expo simplifies many steps, Android Studio is required to run the app on an Android emulator.
 
 - Visit the [Android Studio official website](https://developer.android.com/studio).
 - Download and install Android Studio by following the instructions for your operating system.
 - After installation, open Android Studio and complete the default setup.
-  You need to install the Android SDK and set up a virtual device for testing.
+  make sure the boxes next to all of the following items are checked:
+
+  - Android SDK
+  - Android SDK Platform
+  - Android Virtual Device
 
 - To install the required SDK, go to:
 
   `More Actions` -> `SDK Manager`
 
-  Ensure that Android SDK version 10 (Q) is installed.
+  The SDK Manager can also be found within the Android Studio "Settings" dialog, under Languages & Frameworks → Android SDK.
+  Select the "SDK Platforms" tab from within the SDK Manager, then check the box next to "Show Package Details" in the bottom right corner. Look for and expand the Android 14 (UpsideDownCake) entry, then make sure the following items are checked:
 
-- After installing the SDK, set up an Android Virtual Device (AVD) by going to:
+  - Android SDK Platform 34
+  - (for Apple M1 Silicon) Google APIs ARM 64 v8a System Image
 
-  `More Actions` -> `Virtual Device Manager`
+- Next, select the "SDK Tools" tab and check the box next to "Show Package Details" here as well. Look for and expand the "Android SDK Build-Tools" entry, then make sure that 34.0.0 is selected.
 
-  Create a virtual device, select a system image (API level 30 or higher), and start the emulator.
+- Finally, click "Apply" to download and install the Android SDK and related build tools.
 
 ## Configuration Steps
 
 ### 1. Configure Environment Variables for Android Development
 
 To build and run Android apps using React Native, you need to configure some environment variables.
-
-#### On macOS:
 
 - Open your terminal and edit the `~/.zshrc` file (since you are using zsh shell):
 
@@ -105,7 +115,7 @@ To ensure that the Android SDK is correctly configured for Android development w
 - You should see the version information of adb if the Android SDK is correctly set up. If the command returns an error, ensure that the ANDROID_HOME environment variable is correctly configured, and that the platform-tools path is included in your PATH environment variable.
 - If everything is configured correctly, you can now use Android devices or emulators to run your React Native projects.
 
-### 3. Install Expo Go on Physical Devices (Optional)
+### 3. Install Expo Go on Physical Devices
 
 To test your React Native app on a physical device without using an emulator, you can install the **Expo Go** app.
 
@@ -117,7 +127,7 @@ Once installed:
 - Run the following command to start your project:
 
   ```bash
-  expo start
+  npx expo start
   ```
 
 - This will open the Expo Developer Tools in your browser. You will see a QR code.
@@ -180,7 +190,7 @@ Once your Android emulator is running, navigate to your project directory and st
 - Open a terminal and run:
 
   ```bash
-  expo start
+  npx expo start
   ```
 
 - This will open the Expo Developer Tools in your web browser, and a QR code will be displayed.
@@ -189,8 +199,3 @@ Once your Android emulator is running, navigate to your project directory and st
 
 - In the Expo Developer Tools that opened in your browser, look for the option Run on Android device/emulator and click on it.
 - If the Android emulator is already running, Expo will automatically install the app on the emulator and launch it.
-
-### 4. Troubleshooting
-
-- Emulator Not Starting: Ensure that the emulator is properly set up in Android Studio and that you have selected a system image with the correct API level (preferably API level 30 or higher).
-- Device Not Connected: If Expo does not detect the running emulator, try restarting both the emulator and Expo, and ensure that Android Studio is properly configured.
