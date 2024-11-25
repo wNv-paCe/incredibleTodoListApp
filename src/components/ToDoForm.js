@@ -44,9 +44,10 @@ export default ToDoForm;
 const styles = StyleSheet.create({
   form: {
     width: "100%",
+    alignItems: "center",
   },
   input: {
-    width: "100%", // 确保输入框占满父容器
+    width: "100%",
     borderWidth: 1,
     borderColor: "#ccc",
     padding: 10,
@@ -55,9 +56,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#f9f9f9",
   },
   button: {
-    width: "100%", // 确保按钮占满父容器
     backgroundColor: "#007bff",
     paddingVertical: 12,
+    paddingHorizontal: 24,
     borderRadius: 8,
     alignItems: "center",
   },
