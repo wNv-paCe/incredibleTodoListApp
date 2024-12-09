@@ -6,22 +6,49 @@ import {
   Alert,
   Text,
 } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-const ToDoForm = ({ addTask, tasks }) => {
-  const [taskText, setTaskText] = React.useState("");
+const ToDoForm = ({ addTask }) => {
+  const [taskText, setTaskText] = useState("");
+  const [tasks, setTasks] = useState([]);
+  const [userTasks, setUserTasks] = useState([]);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const data = require("../data/tasks.json");
+        console.log("Tasks loaded", data.tasks);
+        setTasks(data.tasks || []);
+      } catch (error) {
+        console.error("Get task failed", error);
+        setTasks([]);
+      }
+    };
+
+    fetchTasks();
+  }, []);
 
   const handleAddTask = () => {
     if (taskText.trim() === "") {
       Alert.alert("Error", "Task cannot be empty!");
       return;
     }
-    if (tasks.includes(taskText)) {
+    if (userTasks.includes(taskText)) {
       Alert.alert("Error", "Task already exists!");
       return;
     }
     addTask(taskText);
+    setUserTasks([...userTasks, taskText]);
     setTaskText("");
+  };
+
+  const handleGenerateRandomTask = () => {
+    if (!Array.isArray(tasks) || tasks.length === 0) {
+      Alert.alert("Error", "No tasks available to choose from!");
+      return;
+    }
+    const randomIndex = Math.floor(Math.random() * tasks.length);
+    setTaskText(tasks[randomIndex]);
   };
 
   return (
@@ -34,6 +61,12 @@ const ToDoForm = ({ addTask, tasks }) => {
       />
       <TouchableOpacity style={styles.button} onPress={handleAddTask}>
         <Text style={styles.buttonText}>Add Task</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, styles.randomButton]}
+        onPress={handleGenerateRandomTask}
+      >
+        <Text style={styles.buttonText}>Generate Random Task</Text>
       </TouchableOpacity>
     </View>
   );
@@ -61,6 +94,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     borderRadius: 8,
     alignItems: "center",
+    marginTop: 10,
+  },
+  randomButton: {
+    backgroundColor: "#28a745", // 设置随机任务按钮的颜色
   },
   buttonText: {
     color: "#ffffff",
